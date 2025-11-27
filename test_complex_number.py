@@ -1,5 +1,5 @@
 import unittest
-from main import ComplexNumber, find_largest_magnitude
+from ComplexNumber import ComplexNumber, find_largest_magnitude
 
 class TestComplexNumber(unittest.TestCase):
     
