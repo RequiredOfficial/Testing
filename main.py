@@ -1,6 +1,4 @@
 import math
-# Модуль для работы с комплексными числами
-# Предоставлен для задания по МДК.01.02
 
 class ComplexNumber:
     """
@@ -12,51 +10,59 @@ class ComplexNumber:
         self.imaginary = imaginary
 
     def __add__(self, other):
-        # Ошибка: не проверяется, является ли 'other' экземпляром ComplexNumber
+        # Исправлено: добавлена проверка типа
+        if not isinstance(other, ComplexNumber):
+            raise TypeError("Операнд должен быть экземпляром ComplexNumber")
         return ComplexNumber(self.real + other.real, self.imaginary + other.imaginary)
 
     def __sub__(self, other):
-        # Ошибка: не проверяется, является ли 'other' экземпляром ComplexNumber
+        # Исправлено: добавлена проверка типа
+        if not isinstance(other, ComplexNumber):
+            raise TypeError("Операнд должен быть экземпляром ComplexNumber")
         return ComplexNumber(self.real - other.real, self.imaginary - other.imaginary)
 
     def __mul__(self, other):
-        # Ошибка: не проверяется, является ли 'other' экземпляром ComplexNumber
-        # Ошибка: неправильная формула умножения комплексных чисел (a+bi) * (c+di) = (ac-bd) + (ad+bc)i
+        # Исправлено: добавлена проверка типа и исправлена формула умножения
+        if not isinstance(other, ComplexNumber):
+            raise TypeError("Операнд должен быть экземпляром ComplexNumber")
+        # Формула умножения комплексных чисел: (a+bi) * (c+di) = (ac-bd) + (ad+bc)i
         real_part = self.real * other.real - self.imaginary * other.imaginary
-        imaginary_part = self.imaginary * other.real + self.real * other.imaginary
+        imaginary_part = self.real * other.imaginary + self.imaginary * other.real
         return ComplexNumber(real_part, imaginary_part)
 
     def __str__(self):
-        # Ошибка: не учитывается знак мнимой части для красивого вывода
-        return f"{self.real} + {self.imaginary}i"
+        # Исправлено: учитывается знак мнимой части для красивого вывода
+        if self.imaginary >= 0:
+            return f"{self.real} + {self.imaginary}i"
+        else:
+            return f"{self.real} - {abs(self.imaginary)}i"
 
     def magnitude(self):
-        # Ошибка: неправильная формула (должна быть sqrt(a^2 + b^2))
-        return self.real**2 + self.imaginary**2 # Пропущен sqrt
+        # Исправлено: добавлен квадратный корень
+        return math.sqrt(self.real**2 + self.imaginary**2)
 
-# --- Функция с логической ошибкой ---
+# --- Исправленная функция ---
 def find_largest_magnitude(numbers_list):
     """
     Находит комплексное число с наибольшим модулем (величиной) в списке.
     Возвращает это число.
     """
     if not numbers_list:
-        return None # Ошибка: не обрабатывается случай пустого списка в логике цикла
+        return None
 
     largest = numbers_list[0]
     for num in numbers_list:
-        # Ошибка: используется неправильный метод magnitude (см. класс)
+        # Исправлено: используется правильный метод magnitude
         if num.magnitude() > largest.magnitude():
             largest = num
     return largest
 
-# --- Функция с синтаксической ошибкой ---
+# --- Исправленная функция ---
 def print_summary(real_part, imag_part):
-    # Ошибка: синтаксическая ошибка (лишний символ)
+    # Исправлено: добавлена закрывающая скобка
     print(f"Действительная часть: {real_part}, Мнимая часть: {imag_part}")
-    # Пропущена закрывающая скобка у print
 
-# --- Пример использования (с ошибками) ---
+# --- Пример использования (исправленный) ---
 num1 = ComplexNumber(3, 4)
 num2 = ComplexNumber(1, -2)
 num3 = ComplexNumber(0, 5)
@@ -72,4 +78,4 @@ numbers = [num1, num2, num3]
 largest_num = find_largest_magnitude(numbers)
 print("Число с наибольшим модулем:", largest_num)
 
-# print_summary(10, 20) # Вызовите эту функцию, чтобы увидеть синтаксическую ошибку
+print_summary(10, 20)  # Теперь функция работает корректно
